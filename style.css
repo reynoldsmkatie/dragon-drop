@@ -1,0 +1,146 @@
+body {
+  background: #eef8e9;
+  margin: 0;
+  padding: 0;
+  width: 1200px;
+  height: 100%;
+  font-family: "Nanum Gothic Coding", monospace;
+  touch-action: none;
+}
+
+img {
+  -webkit-touch-callout: none !important;
+  user-select: none !important;
+}
+
+h1 {
+  text-align: center;
+  font-size: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+p {
+  text-align: center;
+  width: 90%;
+  margin: auto;
+}
+
+[draggable] {
+  cursor: move;
+}
+
+#overlay {
+  display: block;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+
+#overlayend {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
+  z-index: 2500;
+}
+
+#overlaystartgame {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 100%;
+  height: 100%;
+  z-index: 90;
+}
+
+.galleoncoins {
+  transition: 0.1s ease-in-out;
+}
+
+.galleoncoins:hover {
+  transform: scale(1.2);
+}
+
+.sicklecoins {
+  transition: 0.1s ease-in-out;
+}
+
+.sicklecoins:hover {
+  transform: scale(1.2);
+}
+
+.knutcoins {
+  transition: 0.1s ease-in-out;
+}
+
+.knutcoins:hover {
+  transform: scale(1.2);
+}
+
+.sackofcoins {
+  transition: 0.1s ease-in-out;
+}
+
+.sackofcoins:hover {
+  transform: scale(1.2);
+  border-radius: 50%;
+}
+
+#startgame {
+  background-color: lime;
+  border-radius: 25px;
+  border: 5px solid black;
+  font-size: 36px;
+  font-weight: bold;
+  width: 350px;
+  height: 75px;
+  font-family: "Nanum Gothic Coding", monospace;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+#readytoplay {
+  background-color: #f5e63a;
+  border-radius: 15px;
+  border: 5px solid black;
+  font-size: 25px;
+  font-weight: bold;
+  width: 220px;
+  height: 50px;
+  font-family: "Nanum Gothic Coding", monospace;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+#newgame {
+  font-size: 25px;
+  padding: 10px 20px;
+  width: 250px;
+  font-family: "Nanum Gothic Coding", monospace;
+  font-weight: bold;
+  background-color: lime;
+  border-radius: 15px;
+  cursor: pointer;
+  border: 5px solid black;
+  transition: 0.2s ease-in-out;
+}
+
+#startgame:hover {
+  transform: scale(1.1);
+}
+
+#newgame:hover {
+  transform: scale(1.1);
+}
+
+#readytoplay:hover {
+  transform: scale(1.1);
+}

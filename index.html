@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-09RZCC4ZK4"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-09RZCC4ZK4");
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1200" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Dragon Drop" />
+    <meta
+      name="description"
+      content="A dragon is hoarding all your gold! Drag as much money to your vault as you can before time runs out!"
+    />
+    <meta
+      property="og:title"
+      content="Play Dragon Drop! A drag-and-drop game against the clock."
+    />
+    <meta
+      property="og:url"
+      content="https://www.codeeverydamnday.com/projects/dragondrop/index.html/"
+    />
+    <meta
+      property="og:description"
+      content="A dragon is hoarding all your gold! Drag as much money to your vault as you can before time runs out!"
+    />
+    <meta property="og:image" content="images/dragon-drop-ui.png" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="images/dragon-drop-icon.png" />
+    <link rel="apple-touch-icon" href="web-app-dragon-icon.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="style.css" type="text/css" rel="stylesheet" />
+    <script src="script.js" defer></script>
+    <title>Dragon Drop | Code Every Damn Day</title>
+  </head>
+
+  <body>
+    <div id="overlay" draggable="false">
+      <div
+        id="overlaytext"
+        style="
+          z-index: 2000;
+          background-color: white;
+          width: 800px;
+          margin-top: 10px;
+          margin-left: 200px;
+          padding: 10px;
+        "
+      >
+        <h1>Dragon Drop</h1>
+        <p style="font-size: 16px">
+          A dragon is hoarding all your money! You have
+          <span
+            style="
+              font-weight: bold;
+              font-size: 20px;
+              background: #f5e63a;
+              padding: 0px 5px;
+            "
+            >10 SECONDS</span
+          >
+          to drag as many coins as you can into your vault.
+        </p>
+        <table style="margin: auto; width: 700px">
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+            <td style="text-align: right">
+              <img src="images/galleon.svg" alt="gold coin" />
+            </td>
+            <td style="font-size: 24px; font-weight: bold">= $1000</td>
+            <td style="text-align: right">
+              <img src="images/sickle.svg" alt="silver coin" />
+            </td>
+            <td style="font-size: 24px; font-weight: bold">= $500</td>
+            <td style="text-align: right">
+              <img src="images/knut.svg" alt="bronze coin" />
+            </td>
+            <td style="font-size: 24px; font-weight: bold">= $250</td>
+            <td>&nbsp;&nbsp;&nbsp;</td>
+          </tr>
+        </table>
+        <p style="font-size: 16px">
+          Hurry! The dragon gets to keep everything you can't save!
+        </p>
+        <p>&nbsp;</p>
+        <div
+          id="readytoplaybutton"
+          style="text-align: center"
+          style="z-index: 100"
+        >
+          <button id="readytoplay" onclick="readyToPlay();">Ready?</button>
+          <p>&nbsp;</p>
+          <p>
+            &larr; Back to
+            <a href="/index.html">CodeEveryDamnDay.com</a>
+          </p>
+          <p>&nbsp;</p>
+          <div style="text-align: center">
+            <img
+              style="width: 40%"
+              src="../../images/hand-coded-with-love-one-line.png"
+              alt="Hand-Coded with Love by Planet Katie"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- ends overlaytext div-->
+    </div>
+    <!-- ends overlay div -->
+    <div id="overlayend" style="display: none" draggable="false">
+      <div
+        id="overlayendtext"
+        style="
+          z-index: 3000;
+          background-color: white;
+          width: 400px;
+          margin-top: 50px;
+          margin-left: 400px;
+          padding: 30px;
+        "
+      >
+        <p
+          style="
+            font-size: 36px;
+            font-weight: bold;
+            padding: 10px 20px;
+            width: 250px;
+            color: white;
+            background-color: rgb(185, 42, 42);
+            border-radius: 15px;
+          "
+        >
+          TIME'S UP!
+        </p>
+        <p>&nbsp;</p>
+        <p id="finalscore" style="font-size: 40px; font-weight: bold"></p>
+        <p>&nbsp;</p>
+        <p>
+          <button id="newgame" onclick="window.location.reload();">
+            Play Again?
+          </button>
+        </p>
+        <p>&nbsp;</p>
+        <p>
+          &larr; Back to
+          <a href="/index.html">CodeEveryDamnDay.com</a>
+        </p>
+      </div>
+      <!-- ends overlayendtext-->
+    </div>
+    <!-- ends overlayend -->
+    <div id="overlaystartgame" style="display: none" draggable="false"></div>
+    <!-- Ends overlay Start Game -->
+
+    <table
+      style="
+        display: inline-block;
+        position: absolute;
+        left: 450px;
+        margin-top: 0px;
+      "
+    >
+      <tr>
+        <td
+          style="
+            display: inline-block;
+            width: 380px;
+            text-align: center;
+            padding: 5px 10px 0px 10px;
+          "
+          id="gametimerafter"
+        ></td>
+      </tr>
+      <tr>
+        <td
+          style="
+            display: inline-block;
+            width: 380px;
+            text-align: center;
+            padding: 0px 10px 10px 10px;
+          "
+        >
+          <span
+            id="score"
+            style="text-align: center; font-size: 36px; font-weight: bold"
+            >Score: $0</span
+          >
+        </td>
+      </tr>
+    </table>
+
+    <table
+      style="
+        display: inline-block;
+        position: absolute;
+        top: 150px;
+        left: 450px;
+        z-index: 100;
+      "
+    >
+      <tr>
+        <td
+          style="
+            display: inline-block;
+            width: 380px;
+            text-align: center;
+            padding: 10px 10px 0px 10px;
+          "
+          id="gametimerbefore"
+        >
+          <button id="startgame" onclick="startTimer();">Start Game</button>
+        </td>
+      </tr>
+    </table>
+
+    <div id="allart" oncontextmenu="return false;" )>
+      <div id="dragonarea">
+        <img
+          draggable="false"
+          data-toggle="0"
+          src="images/dragon.svg"
+          style="position: absolute; left: 10px; top: 10px; z-index: 0"
+          id="dragon"
+          width="475px;"
+          alt="cartoon dragon"
+        />
+      </div>
+      <div id="allcoins">
+        <img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 294px; top: 224px; z-index: 5"
+          id="galleon1"
+          alt="gold coin"
+        /><img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 257px; top: 299px; z-index: 5"
+          id="galleon2"
+          alt="gold coin"
+        /><img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 150px; top: 296px; z-index: 5"
+          id="galleon3"
+          alt="gold coin"
+        /><img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 75px; top: 267px; z-index: 5"
+          id="galleon4"
+          alt="gold coin"
+        /><img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 196px; top: 233px; z-index: 5"
+          id="galleon5"
+          alt="gold coin"
+        /><img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 103px; top: 231px; z-index: 5"
+          id="galleon6"
+          alt="gold coin"
+        /><img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 424px; top: 308px; z-index: 5"
+          id="sickle1"
+          alt="silver coin"
+        /><img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 402px; top: 261px; z-index: 5"
+          id="galleon7"
+          alt="gold coin"
+        /><img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 137px; top: 270px; z-index: 5"
+          id="sickle2"
+          alt="silver coin"
+        /><img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 69px; top: 310px; z-index: 5"
+          id="sickle3"
+          alt="silver coin"
+        /><img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 340px; top: 230px; z-index: 5"
+          id="sickle4"
+          alt="silver coin"
+        /><img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 200px; top: 303px; z-index: 5"
+          id="sickle5"
+          alt="silver coin"
+        /><img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 270px; top: 257px; z-index: 5"
+          id="sickle6"
+          alt="silver coin"
+        /><img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 472px; top: 306px; z-index: 5"
+          id="sickle7"
+          alt="silver coin"
+        /><img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 304px; top: 292px; z-index: 5"
+          id="sickle8"
+          alt="silver coin"
+        /><img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 345px; top: 290px; z-index: 5"
+          id="sickle9"
+          alt="silver coin"
+        /><img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 255px; top: 228px; z-index: 5"
+          id="knut1"
+          alt="bronze coin"
+        /><img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 5px; top: 300px; z-index: 5"
+          id="galleon8"
+          alt="gold coin"
+        /><img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 325px; top: 262px; z-index: 5"
+          id="knut2"
+          alt="bronze coin"
+        /><img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 383px; top: 318px; z-index: 5"
+          id="knut3"
+          alt="bronze coin"
+        /><img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 107px; top: 313px; z-index: 5"
+          id="knut4"
+          alt="bronze coin"
+        /><img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 385px; top: 250px; z-index: 5"
+          id="knut5"
+          alt="bronze coin"
+        /><img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 171px; top: 230px; z-index: 10"
+          id="knut6"
+          alt="bronze coin"
+        /><img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 317px; top: 322px; z-index: 5"
+          id="knut7"
+          alt="bronze coin"
+        /><img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 458px; top: 290px; z-index: 5"
+          id="knut8"
+          alt="bronze coin"
+        /><img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 50px; top: 283px; z-index: 5"
+          id="knut9"
+          alt="bronze coin"
+        /><img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 237px; top: 281px; z-index: 5"
+          id="knut10"
+          alt="bronze coin"
+        />
+        <img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 506px; top: 330px; z-index: 5"
+          id="knut11"
+          alt="bronze coin"
+        />
+        <img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 159px; top: 353px; z-index: 5"
+          id="knut12"
+          alt="bronze coin"
+        />
+        <img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 431px; top: 349px; z-index: 5"
+          id="knut13"
+          alt="bronze coin"
+        />
+        <img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 524px; top: 339px; z-index: 5"
+          id="sickle11"
+          alt="silver coin"
+        />
+        <img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 273px; top: 337px; z-index: 5"
+          id="sickle12"
+          alt="silver coin"
+        />
+        <img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 374px; top: 339px; z-index: 5"
+          id="sickle14"
+          alt="silver coin"
+        />
+        <img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 197px; top: 333px; z-index: 5"
+          id="galleon9"
+          alt="gold coin"
+        />
+        <img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 462px; top: 330px; z-index: 5"
+          id="galleon10"
+          alt="gold coin"
+        />
+        <img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 330px; top: 328px; z-index: 5"
+          id="galleon11"
+        />
+        <img
+          draggable="true"
+          src="images/galleon.svg"
+          class="galleoncoins"
+          style="position: absolute; left: 98px; top: 326px; z-index: 5"
+          id="galleon12"
+          alt="gold coin"
+        />
+        <img
+          draggable="true"
+          src="images/sickle.svg"
+          class="sicklecoins"
+          style="position: absolute; left: 47px; top: 333px; z-index: 5"
+          id="sickle13"
+          alt="silver coin"
+        />
+        <img
+          draggable="true"
+          src="images/knut.svg"
+          class="knutcoins"
+          style="position: absolute; left: 4px; top: 346px; z-index: 10"
+          id="knut14"
+          alt="bronze coin"
+        />
+      </div>
+      <div id="vaultarea">
+        <img
+          draggable="false"
+          src="images/vault.svg"
+          style="position: absolute; left: 840px; top: 35px; z-index: 0"
+          id="vault"
+          width="340px"
+          alt="cartoon vault"
+        />
+      </div>
+    </div>
+    <!-- ends allart-->
+  </body>
+</html>
